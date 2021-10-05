@@ -1,0 +1,194 @@
+#*********************(1)Directed Graph Implementation*********************
+
+# A class to store a graph edge
+class Edge:
+    def __init__(self, src, dest):
+        self.src = src
+        self.dest = dest
+
+
+# A class to represent a graph object
+class Graph:
+    # Constructor
+    def __init__(self, edges, N):
+        # allocate memory for the adjacency list
+        self.adj = [[] for _ in range(N)]
+
+        # add edges to the undirected graph
+        for current in edges:
+            # allocate node in adjacency list from src to dest
+            self.adj[current.src].append(current.dest)
+
+
+# Function to print adjacency list representation of a graph
+def printGraph(graph):
+    for src in range(len(graph.adj)):
+        # print current vertex and all its neighboring vertices
+        for dest in graph.adj[src]:
+            print(f"({src} —> {dest}) ", end="")
+        print()
+
+
+if __name__ == '__main__':
+
+    # Input: Edges in a directed graph
+    edges = [Edge(0, 1), Edge(1, 2), Edge(2, 0), Edge(2, 1),
+            Edge(3, 2), Edge(4, 5), Edge(5, 4)]
+
+    # Input: No of vertices
+    N = 6
+
+    # construct a graph from a given list of edges
+    graph = Graph(edges, N)
+
+    # print adjacency list representation of the graph
+    printGraph(graph)
+
+#**********************(2)Weighted Directed Graph****************************
+
+# A class to store a graph edge
+class Edge:
+    def __init__(self, src, dest, weight):
+        self.src = src
+        self.dest = dest
+        self.weight = weight
+
+
+# A class to store adjacency list nodes
+class Node:
+    def __init__(self, value, weight):
+        self.value = value
+        self.weight = weight
+
+
+# A class to represent a graph object
+class Graph:
+    # Constructor to construct a graph
+    def __init__(self, edges, N):
+
+        # A list of lists to represent an adjacency list
+        self.adj = [None] * N
+
+        # allocate memory for the adjacency list
+        for i in range(N):
+            self.adj[i] = []
+
+        # add edges to the undirected graph
+        for e in edges:
+            # allocate node in adjacency list from src to dest
+            node = Node(e.dest, e.weight)
+            self.adj[e.src].append(node)
+
+
+# Function to print adjacency list representation of a graph
+def printGraph(graph):
+    for src in range(len(graph.adj)):
+        # print current vertex and all its neighboring vertices
+        for edge in graph.adj[src]:
+            print(f"({src} —> {edge.value}, {edge.weight}) ", end='')
+        print()
+
+
+if __name__ == '__main__':
+
+    # Input: Edges in a weighted digraph (as per the above diagram)
+    # Edge `(x, y, w)` represents an edge from `x` to `y` having weight `w`
+    edges = [Edge(0, 1, 6), Edge(1, 2, 7), Edge(2, 0, 5), Edge(2, 1, 4),
+            Edge(3, 2, 10), Edge(4, 5, 1), Edge(5, 4, 3)]
+
+    # Input: No of vertices
+    N = 6
+
+    # construct a graph from a given list of edges
+    graph = Graph(edges, N)
+
+    # print adjacency list representation of the graph
+    printGraph(graph)
+
+
+#***************************(3)Graph****************************************
+
+class Graph:
+    def __init__(self, edges):
+        self.edges = edges
+        self.graph_dict = {}
+        for start, end in edges:
+            if start in self.graph_dict:
+                self.graph_dict[start].append(end)
+            else:
+                self.graph_dict[start] = [end]
+        print("Graph Dict:", self.graph_dict)
+
+    def get_paths(self, start, end, path=[]):
+        path = path + [start]
+
+        if start == end:
+            return [path]
+
+        if start not in self.graph_dict:
+            return []
+
+        paths = []
+        for node in self.graph_dict[start]:
+            if node not in path:
+                new_paths = self.get_paths(node, end, path)
+                for p in new_paths:
+                    paths.append(p)
+
+        return paths
+
+    def get_shortest_path(self, start, end, path=[]):
+        path = path + [start]
+
+        if start == end:
+            return path
+
+        if start not in self.graph_dict:
+            return None
+
+        shortest_path = None
+        for node in self.graph_dict[start]:
+            if node not in path:
+                sp = self.get_shortest_path(node, end, path)
+                if sp:
+                    if shortest_path is None or len(sp) < len(shortest_path):
+                        shortest_path = sp
+
+        return shortest_path
+
+if __name__ == '__main__':
+
+    routes = [
+        ("Mumbai","Pune"),
+        ("Mumbai", "Surat"),
+        ("Surat", "Bangaluru"),
+        ("Pune","Hyderabad"),
+        ("Pune","Mysuru"),
+        ("Hyderabad","Bangaluru"),
+        ("Hyderabad", "Chennai"),
+        ("Mysuru", "Bangaluru"),
+        ("Chennai", "Bangaluru")
+    ]
+
+    routes = [
+        ("Mumbai", "Paris"),
+        ("Mumbai", "Dubai"),
+        ("Paris", "Dubai"),
+        ("Paris", "New York"),
+        ("Dubai", "New York"),
+        ("New York", "Toronto"),
+    ]
+
+    route_graph = Graph(routes)
+
+    start = "Mumbai"
+    end = "New York"
+
+    print(f"All paths between: {start} and {end}: ",route_graph.get_paths(start,end))
+    print(f"Shortest path between {start} and {end}: ", route_graph.get_shortest_path(start,end))
+
+    start = "Dubai"
+    end = "New York"
+
+    print(f"All paths between: {start} and {end}: ",route_graph.get_paths(start,end))
+    print(f"Shortest path between {start} and {end}: ", route_graph.get_shortest_path(start,end))
