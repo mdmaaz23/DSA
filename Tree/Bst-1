@@ -1,3 +1,4 @@
+
 class BinarySearchTreeNode:
     def __init__(self, data):
         self.data = data
@@ -93,10 +94,14 @@ def build_tree(elements):
 
 if __name__ == '__main__':
 
-    numbers = [15,12,7,14,27,20,23,88 ]
+    input_string = input('Enter elements of a list separated by space ')
+    numbers = input_string.split()
+    print('list: ', numbers)
+    for i in range(len(numbers)):
+        # convert each item to int type
+        numbers[i] = int(numbers[i])
 
     numbers_tree = build_tree(numbers)
-    print("Input numbers:",numbers)
     print("Min:",numbers_tree.find_min())
     print("Max:",numbers_tree.find_max())
     print("Sum:", numbers_tree.calculate_sum())
