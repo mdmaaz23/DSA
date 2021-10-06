@@ -1,0 +1,53 @@
+f=0
+r=0
+class Queue:
+    def __init__(self):
+        self.items = []
+
+    def isEmpty(self):
+        return self.items == []
+
+    def enqueue(self, item):
+        self.items.append(item)
+        if(len(self.items)==1):
+            f=r=0
+        else:
+            r=len(self.items)-1
+
+    def dequeue(self):
+        if len(self.items) != 0:
+                return self.items.pop()
+        else:
+            print("Queue is empty")
+
+    def peek(self):
+        if len(self.items) == 0:
+            print("Queue is Empty!!!")
+        else:
+            print("Element at front :",self.items[0])
+
+
+    def display(self):
+        return (self.items)
+
+q =Queue()
+c = 0
+while c != 5:
+    print('\tQUEUE OPERATIONS')
+    print('1.enqueue')
+    print('2.dequeue')
+    print('3.Peek')
+    print('4.Display Queue')
+    print('5.Exit')
+    c = int(input('Enter your choice(1-5): '))
+    if c == 1:
+        x = input("Enter the item: ")
+        q.enqueue(q)
+    elif c == 2:
+        q.dequeue()
+    elif c == 3:
+        q.peek()
+    elif c == 4:
+        print(q.display())
+    elif c != 5:
+        print('Wrong Choice! Choose from 1 to 5 only')
